@@ -48,7 +48,3 @@ Run `demo.py` after setting the MongoDB URL.
 
 ```bash
 export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.mongodb.net/"
-
-
-
-
