@@ -1,176 +1,137 @@
-Vehicle Insurance Default Prediction (MLOps Project)
-markdown
-# 🚗 Vehicle Insurance Default Prediction — End-to-End MLOps Project
+🚗 MLOps Project — Vehicle Insurance Data Pipeline
+Welcome to this MLOps project, designed to demonstrate a robust pipeline for managing vehicle insurance data. This project showcases the tools, techniques, services, and automation strategies used to build and deploy a real-world machine learning pipeline. Whether you're a recruiter, engineer, or enthusiast — this walkthrough highlights every step from setup to cloud deployment!
 
-This project demonstrates a complete MLOps workflow for predicting vehicle insurance defaults. It covers everything from local development and data ingestion to cloud deployment and CI/CD automation using Docker, AWS, MongoDB Atlas, and GitHub Actions.
+📁 Project Setup and Structure
+🔧 Step 1: Project Template
+Start by executing template.py to generate the initial folder structure and placeholder files.
 
----
+📦 Step 2: Package Management
+Configure local package imports using setup.py and pyproject.toml.
 
-## 📦 Project Setup
+💡 Tip: Refer to crashcourse.txt for a quick guide on these files.
 
-### 1️⃣ Project Initialization
-
-- Run `template.py` to scaffold the project directory structure.
-
-### 2️⃣ Package Management
-
-- Use `setup.py` and `pyproject.toml` to define and import local packages.
-- Refer to `crashcourse.txt` for details on configuring these files.
-
-### 3️⃣ Virtual Environment Setup
-
-```bash
+🐍 Step 3: Virtual Environment and Dependencies
+bash
 conda create -n vehicle python=3.10 -y
 conda activate vehicle
 pip install -r requirements.txt
-Add required modules to requirements.txt.
-
-Confirm installation with:
+✅ Verify installed packages:
 
 bash
 pip list
-🍃 MongoDB Atlas Integration
-4️⃣ Cluster & Database Setup
+📊 MongoDB Setup and Data Management
+🍃 Step 4: MongoDB Atlas Configuration
 Sign up at MongoDB Atlas.
 
-Create a project → Create cluster → Select M0 tier → Deploy.
+Create a new project and deploy a free M0 cluster.
 
-Create DB user with username/password.
+Set up a DB user with username/password.
 
-Add IP access: 0.0.0.0/0 (open access).
+Allow access from all IPs: 0.0.0.0/0.
 
-Get connection string (Python driver ≥ 3.6) and replace <password>.
+Copy the Python connection string and replace <password>.
 
-5️⃣ Data Upload
-Create notebook/ folder and add dataset.
+📤 Step 5: Pushing Data to MongoDB
+Create a notebook/ folder and add your dataset.
 
 Create mongoDB_demo.ipynb and push data to MongoDB.
 
-Verify upload via MongoDB Atlas → Database → Browse Collections.
+Verify data in MongoDB Atlas → Database → Browse Collections.
 
-🧾 Logging & Exception Handling
-6️⃣ Setup
+📝 Logging, Exception Handling, and EDA
+🛠️ Step 6: Set Up Logging and Exception Handling
 Create logger.py and exception.py.
 
-Test both using demo.py.
+Test them using demo.py.
 
-7️⃣ EDA & Feature Engineering
-Add exploratory analysis and feature engineering notebooks to notebook/.
+📈 Step 7: EDA and Feature Engineering
+Perform exploratory data analysis and feature engineering in the notebook.
 
-📥 Data Ingestion Pipeline
-8️⃣ Configuration
-Define constants in constants/__init__.py.
+📥 Data Ingestion
+🔌 Step 8: Data Ingestion Pipeline
+Define MongoDB connection logic in configuration.mongo_db_connections.py.
 
-Setup MongoDB connection in configuration/mongo_db_connections.py.
+Implement ingestion logic in:
 
-Create data_access/proj1_data.py to fetch and transform data.
+data_access/proj1_data.py
 
-Define config and artifact classes in:
+components/data_ingestion.py
+
+Update configs in:
 
 entity/config_entity.py
 
 entity/artifact_entity.py
 
-Implement ingestion logic in components/data_ingestion.py.
+Run demo.py after setting the MongoDB URL.
 
-Integrate into training pipeline and run via demo.py.
-
-9️⃣ MongoDB URL Setup
+🌐 Setting Environment Variables
 Bash
 bash
 export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.mongodb.net/"
-echo $MONGODB_URL
 PowerShell
 powershell
 $env:MONGODB_URL = "mongodb+srv://<username>:<password>@cluster.mongodb.net/"
-echo $env:MONGODB_URL
-Windows GUI
-Add environment variable:
+🪟 On Windows, you can also set environment variables via system settings.
 
-Name: MONGODB_URL
+🔍 Data Validation, Transformation & Model Training
+✅ Step 9: Data Validation
+Define schema in config/schema.yaml.
 
-Value: <your_connection_string>
+Implement validation logic in utils/main_utils.py.
 
-Add artifact/ to .gitignore.
+🔄 Step 10: Data Transformation
+Add transformation logic in components.data_transformation.py.
 
-✅ Data Validation, Transformation & Model Training
-🔍 Data Validation
-Complete utils/main_utils.py and config/schema.yaml.
+Create estimator.py in the entity/ folder.
 
-Implement validation logic similar to ingestion pipeline.
+🧠 Step 11: Model Training
+Implement training logic in components.model_trainer.py.
 
-🔄 Data Transformation
-Add transformation logic and estimator.py to entity/.
+Extend estimator.py with model training classes.
 
-🧠 Model Trainer
-Extend estimator.py with training logic.
+☁️ AWS Setup for Model Evaluation & Deployment
+🔐 Step 12: AWS Setup
+Log in to AWS Console.
 
-Implement trainer component and integrate into pipeline.
-
-☁️ AWS Setup for Model Evaluation & Pushing
-🔐 IAM & Access Keys
 Create IAM user (firstproj) with AdministratorAccess.
 
-Generate access keys and download CSV.
+Generate access keys and download the CSV.
 
-🌍 Environment Variables
+Set AWS Credentials
 Bash
 bash
-export AWS_ACCESS_KEY_ID="your_key"
-export AWS_SECRET_ACCESS_KEY="your_secret"
+export AWS_ACCESS_KEY_ID="YOUR_AWS_ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET_ACCESS_KEY"
 PowerShell
 powershell
-$env:AWS_ACCESS_KEY_ID="your_key"
-$env:AWS_SECRET_ACCESS_KEY="your_secret"
-🧾 Configuration
-Add keys and region to constants/__init__.py.
+$env:AWS_ACCESS_KEY_ID="YOUR_AWS_ACCESS_KEY_ID"
+$env:AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET_ACCESS_KEY"
+Add credentials and region to constants/__init__.py.
 
-Setup configuration/aws_connection.py.
-
+🪣 Step 13: Model Evaluation and Pushing to S3
 Create S3 bucket: my-model-mlopsproj in us-east-1.
 
-📁 S3 Integration
-Add aws_storage/ module for push/pull logic.
+Implement push/pull logic in:
 
-Create entity/s3_estimator.py for S3 operations.
+src/aws_storage/
 
-📊 Model Evaluation & Pusher
-Implement evaluation logic with threshold comparison.
+entity/s3_estimator.py
 
-Push accepted models to S3 via ModelPusher.
+🚀 Model Evaluation, Model Pusher, and Prediction Pipeline
+📊 Step 14: Model Evaluation & Model Pusher
+Implement evaluation logic and model deployment components.
 
-🌐 Web App & Prediction Pipeline
-🧱 Setup
-Create prediction pipeline.
+🌐 Step 15: Prediction Pipeline & Web App
+Create prediction pipeline and build app.py using FastAPI.
 
-Build app.py using FastAPI.
+Add static/ and templates/ directories for UI.
 
-Add static/ and templates/ directories.
-
-🔄 CI/CD with GitHub Actions & AWS EC2
-🐳 Docker Setup
+🔄 CI/CD Setup with Docker, GitHub Actions, and AWS
+🐳 Step 16: Docker and GitHub Actions
 Create Dockerfile and .dockerignore.
 
-🧪 GitHub Actions
-Add workflow file: .github/workflows/aws.yaml.
-
-🖥️ EC2 Setup
-Launch EC2 (Ubuntu 24.04, T2 Medium).
-
-Create key pair (proj1key), allow HTTP/HTTPS.
-
-Connect via EC2 Instance Connect.
-
-🐳 Install Docker on EC2
-bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker ubuntu
-newgrp docker
-🤖 GitHub Self-Hosted Runner
-Configure runner on EC2 using GitHub instructions.
-
-Verify runner status as "idle".
+Set up GitHub Actions workflow in .github/workflows/aws.yaml.
 
 🔐 GitHub Secrets
 Add the following secrets:
@@ -183,34 +144,38 @@ AWS_DEFAULT_REGION
 
 ECR_REPO
 
-🧪 Trigger CI/CD
-Push code to GitHub to trigger pipeline.
+🖥️ Step 17: AWS EC2 and ECR
+Launch EC2 instance (Ubuntu 24.04, T2 Medium).
 
-🌍 EC2 App Hosting
-🔓 Open Port
-EC2 → Security Groups → Inbound Rules → Add:
+Create ECR repository: vehicleproj.
 
-Type: Custom TCP
+Install Docker on EC2:
 
-Port: 5080
+bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker ubuntu
+newgrp docker
+Connect EC2 as a self-hosted GitHub runner.
 
-Source: 0.0.0.0/0
+🧪 Step 18: Final Steps
+Open port 5080 in EC2 Security Groups.
 
-🚀 Launch App
-Visit: http://<your_ec2_public_ip>:5080
+Access the deployed app at:
 
-Train model via /training route.
+http://<your_ec2_public_ip>:5080
+Trigger model training via /training route.
 
-🙋‍♂️ Author
-Mohd Idrees 🔗 GitHub Profile
+🛠️ Additional Resources
+📘 Crash Course: See crashcourse.txt for setup.py and pyproject.toml tips.
 
-📜 License
-This project is licensed under the MIT License.
+🔐 GitHub Secrets: Secure your CI/CD pipeline with encrypted secrets.
 
-🤝 Contributing
-Pull requests are welcome! Feel free to fork the repo and enhance the pipeline or deployment strategy.
+🎯 Project Workflow Summary
+Data Ingestion ➔ Data Validation ➔ Data Transformation
+Model Training ➔ Model Evaluation ➔ Model Deployment
+CI/CD Automation with GitHub Actions, Docker, AWS EC2, and ECR
+💬 Connect
+If you found this project helpful or have questions, feel free to reach out or explore the repo!
 
-
----
-
-Let me know if you'd like this saved as a Markdown file or want help generating visuals, architecture diagrams, or Swagger documentation for your FastAPI app.clear
+Let me know if you'd like this saved as a Markdown file or want help adding visuals, architecture diagrams, or Swagger docs to make it even more impressive!
